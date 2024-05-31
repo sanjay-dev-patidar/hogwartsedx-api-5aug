@@ -24,7 +24,7 @@ const sendPasswordResetEmail = (req, email, token) => {
         html: `
             <div style="font-family: 'Courier New', Courier, monospace; max-width: 600px; margin: 0 auto; padding: 20px; border: 2px solid #3A3A3A; border-radius: 10px; background-color: #F5F5DC;">
                 <div style="text-align: center;">
-                    <img src="https://hogwartsedx.vercel.app/logo.png" alt="HogwartsEdx" style="width: 150px;">
+                    <img src="https://sanjaybasket.s3.ap-south-1.amazonaws.com/HogwartsEdX/email_hogwartsedx_logo.jpeg" alt="HogwartsEdx" style="width: 150px;">
                 </div>
                 <h2 style="color: #333; text-align: center;">Reset Your Password</h2>
                 <p style="font-size: 16px; color: #666;">Greetings from HogwartsEdx,</p>
@@ -65,7 +65,7 @@ const sendPasswordResetConfirmationEmail = (req, email) => {
         html: `
             <div style="font-family: 'Courier New', Courier, monospace; max-width: 600px; margin: 0 auto; padding: 20px; border: 2px solid #3A3A3A; border-radius: 10px; background-color: #F5F5DC;">
                 <div style="text-align: center;">
-                    <img src="https://hogwartsedx.vercel.app/logo.png" alt="HogwartsEdx" style="width: 150px;">
+                    <img src="https://sanjaybasket.s3.ap-south-1.amazonaws.com/HogwartsEdX/email_hogwartsedx_logo.jpeg" alt="HogwartsEdx" style="width: 150px;">
                 </div>
                 <h2 style="color: #333; text-align: center;">Password Reset Successful</h2>
                 <p style="font-size: 16px; color: #666;">Hello from HogwartsEdx,</p>
