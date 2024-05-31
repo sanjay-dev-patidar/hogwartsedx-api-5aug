@@ -4,6 +4,7 @@ const User = require('../models/User');
 const { jwtSecret } = require('../config/auth');
 const { validationResult } = require('express-validator');
 const nodemailer = require('nodemailer');
+const { sendPasswordResetEmail, sendPasswordResetConfirmationEmail } = require('./emailTemplates');
 
 // Register a new user
 const register = async (req, res) => {
@@ -104,7 +105,7 @@ const getAuthenticatedUser = async (req, res) => {
     }
 };
 // Forgot password        localStorage.setItem('token', res.data.token);
-
+// Forgot password
 const forgotPassword = async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -115,7 +116,9 @@ const forgotPassword = async (req, res) => {
 
     try {
         let user = await User.findOne({ email });
- if (!user) {
+
+        if (!user) {
+            // If user not found by email, try finding by Google ID
             user = await User.findOne({ googleId: email });
             if (!user) {
                 return res.status(400).json({ message: 'User not found' });
@@ -132,30 +135,9 @@ const forgotPassword = async (req, res) => {
         await user.save();
 
         // Send reset password email
-        const transporter = nodemailer.createTransport({
-            service: 'gmail',
-            auth: {
-                user: 'workrework.sanjay@gmail.com',
-                pass: 'nnefpkztnuxukzsm'
-            }
-        });
+        sendPasswordResetEmail(email, token);
 
-        const mailOptions = {
-            from: 'workrework.sanjay@gmail.com',
-            to: email,
-            subject: 'Reset Password',
-            text: `You are receiving this email because you (or someone else) have requested to reset the password for your account. Please click on the following link to reset your password: ${process.env.CLIENT_URL}/reset-password/${token}`
-        };
-
-        transporter.sendMail(mailOptions, (error, info) => {
-            if (error) {
-                console.log(error);
-                return res.status(500).json({ message: 'Failed to send reset password email' });
-            } else {
-                ('Email sent: ' + info.response);
-                res.status(200).json({ message: 'Reset password email sent successfully' });
-            }
-        });
+        res.status(200).json({ message: 'Reset password email sent successfully' });
     } catch (error) {
         console.error(error.message);
         res.status(500).send('Server Error');
@@ -191,6 +173,9 @@ const resetPassword = async (req, res) => {
         user.resetPasswordExpires = undefined;
 
         await user.save();
+
+        // Send password reset confirmation email
+        sendPasswordResetConfirmationEmail(user.email);
 
         res.status(200).json({ message: 'Password reset successfully' });
     } catch (error) {
