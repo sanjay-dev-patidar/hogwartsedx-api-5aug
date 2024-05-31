@@ -4,14 +4,15 @@ const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const { jwtSecret } = require('../config/auth'); 
+const { sendWelcomeEmail } = require('./mailer'); 
 
 passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     callbackURL: "https://hogwarts-api-31may.onrender.com/api/auth/google/callback",
-    passReqToCallback: true 
+    passReqToCallback: true
   },
-  async (req, token, tokenSecret, profile, done) => { 
+  async (req, token, tokenSecret, profile, done) => {
     console.log('GoogleStrategy callback executed');
     try {
       let user = await User.findOne({ googleId: profile.id });
@@ -43,6 +44,9 @@ passport.use(new GoogleStrategy({
 
       console.log('Generated JWT token:', token);
 
+      // Send welcome email
+      sendWelcomeEmail(user);
+
       return done(null, user);
     } catch (err) {
       console.error('Error in GoogleStrategy:', err);
@@ -56,10 +60,10 @@ passport.serializeUser((user, done) => {
   done(null, user.id);
 });
 
-passport.deserializeUser(async (id, done) => { 
+passport.deserializeUser(async (id, done) => {
   console.log('Deserializing user with id:', id);
   try {
-    const user = await User.findById(id); 
+    const user = await User.findById(id);
     done(null, user);
   } catch (err) {
     done(err, null);
