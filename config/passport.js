@@ -3,15 +3,15 @@ const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
-const { jwtSecret } = require('../config/auth'); // Assuming you have a jwtSecret in your config
+const { jwtSecret } = require('../config/auth'); 
 
 passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: "http://localhost:5000/api/auth/google/callback",
-    passReqToCallback: true // Add this line
+    callbackURL: "https://hogwarts-api-31may.onrender.com/api/auth/google/callback",
+    passReqToCallback: true 
   },
-  async (req, token, tokenSecret, profile, done) => { // Add req as the first argument
+  async (req, token, tokenSecret, profile, done) => { 
     console.log('GoogleStrategy callback executed');
     try {
       let user = await User.findOne({ googleId: profile.id });
@@ -56,10 +56,10 @@ passport.serializeUser((user, done) => {
   done(null, user.id);
 });
 
-passport.deserializeUser(async (id, done) => { // Change to async function
+passport.deserializeUser(async (id, done) => { 
   console.log('Deserializing user with id:', id);
   try {
-    const user = await User.findById(id); // Use promise-based syntax
+    const user = await User.findById(id); 
     done(null, user);
   } catch (err) {
     done(err, null);
