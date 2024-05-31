@@ -34,7 +34,7 @@
         const token = req.user.token; // Retrieve token from authenticated user
     
         // Redirect to dashboard with user details and token in URL
-        res.redirect(`http://localhost:5173/dashboard?user=${encodeURIComponent(JSON.stringify(req.user))}&token=${token}`);
+        res.redirect(`https://hogwartsedx.vercel.app/dashboard?user=${encodeURIComponent(JSON.stringify(req.user))}&token=${token}`);
     });
     
     // Forgot password
