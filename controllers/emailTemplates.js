@@ -2,7 +2,6 @@ const nodemailer = require('nodemailer');
 const moment = require('moment');
 const requestIp = require('request-ip');
 const geoip = require('geoip-lite');
-const useragent = require('useragent');
 
 const transporter = nodemailer.createTransport({
     service: 'gmail',
@@ -15,10 +14,8 @@ const transporter = nodemailer.createTransport({
 const sendPasswordResetEmail = (req, email, token) => {
     const clientIp = requestIp.getClientIp(req);
     const geo = geoip.lookup(clientIp);
-    const agent = useragent.parse(req.headers['user-agent']);
     const timestamp = moment().format('MMMM Do YYYY, h:mm:ss a');
     const location = geo ? `${geo.city}, ${geo.region}, ${geo.country}` : 'Unknown location';
-    const device = `${agent.toAgent()} on ${agent.os}`;
 
     const mailOptions = {
         from: 'workrework.sanjay@gmail.com',
@@ -39,7 +36,6 @@ const sendPasswordResetEmail = (req, email, token) => {
                 <ul style="font-size: 14px; color: #666;">
                     <li>IP Address: ${clientIp}</li>
                     <li>Location: ${location}</li>
-                    <li>Device: ${device}</li>
                     <li>Time: ${timestamp}</li>
                 </ul>
                 <p style="font-size: 14px; color: #999; text-align: center;">If you did not request this, please ignore this email and your password will remain unchanged. Mischief Managed!</p>
@@ -59,10 +55,8 @@ const sendPasswordResetEmail = (req, email, token) => {
 const sendPasswordResetConfirmationEmail = (req, email) => {
     const clientIp = requestIp.getClientIp(req);
     const geo = geoip.lookup(clientIp);
-    const agent = useragent.parse(req.headers['user-agent']);
     const timestamp = moment().format('MMMM Do YYYY, h:mm:ss a');
     const location = geo ? `${geo.city}, ${geo.region}, ${geo.country}` : 'Unknown location';
-    const device = `${agent.toAgent()} on ${agent.os}`;
 
     const mailOptions = {
         from: 'workrework.sanjay@gmail.com',
@@ -83,7 +77,6 @@ const sendPasswordResetConfirmationEmail = (req, email) => {
                 <ul style="font-size: 14px; color: #666;">
                     <li>IP Address: ${clientIp}</li>
                     <li>Location: ${location}</li>
-                    <li>Device: ${device}</li>
                     <li>Time: ${timestamp}</li>
                 </ul>
                 <p style="font-size: 14px; color: #999; text-align: center;">If you did not request this change, please contact our support team immediately. Mischief Managed!</p>
