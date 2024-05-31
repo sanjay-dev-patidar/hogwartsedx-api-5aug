@@ -3,8 +3,8 @@ const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
-const { jwtSecret } = require('../config/auth'); 
-const { sendWelcomeEmail } = require('./mailer'); 
+const { jwtSecret } = require('../config/auth');
+const { sendWelcomeEmail } = require('../mailer');
 
 passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
@@ -45,7 +45,7 @@ passport.use(new GoogleStrategy({
       console.log('Generated JWT token:', token);
 
       // Send welcome email
-      sendWelcomeEmail(user);
+      sendWelcomeEmail(user, req);
 
       return done(null, user);
     } catch (err) {
