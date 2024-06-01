@@ -41,9 +41,16 @@ router.post('/', [
         check('subtitles', 'Subtitles must be an array').isArray(),
         check('subtitles.*.title', 'Subtitle title is required').not().isEmpty(),
         check('subtitles.*.bulletPoints', 'Bullet points must be an array').isArray(),
-        check('subtitles.*.bulletPoints.*', 'Each bullet point must be a string').isString()
+        check('subtitles.*.bulletPoints.*', 'Each bullet point must be a string').isString(),
+        check('superTitles', 'Super titles must be an array').isArray(), // Updated to check for super titles
+        check('superTitles.*.superTitle', 'Super title is required').not().isEmpty(),
+        check('superTitles.*.attributes', 'Attributes must be an array').isArray(),
+        check('superTitles.*.attributes.*.attribute', 'Attribute name is required').not().isEmpty(),
+        check('superTitles.*.attributes.*.items', 'Items must be an array').isArray(),
+        check('superTitles.*.attributes.*.items.*.title', 'Title item is required').not().isEmpty()
     ]
 ], postController.createPost);
+
 
 // Function to check if all posts in a category are completed
 const areAllPostsCompleted = async (categoryId) => {
