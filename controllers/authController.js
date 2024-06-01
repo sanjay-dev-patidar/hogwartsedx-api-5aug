@@ -184,10 +184,32 @@ const resetPassword = async (req, res) => {
     }
 };
 
+
+const acceptPolicy = async (req, res) => {
+    try {
+        // Find the user by ID
+        const user = await User.findById(req.user.id);
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        // Update the policy acceptance status
+        user.policyAccepted = true;
+        await user.save();
+
+        res.status(200).json({ message: 'Policy accepted successfully', user });
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send('Server Error');
+    }
+};
 module.exports = {
     register,
     login,
     getAuthenticatedUser,
      forgotPassword,
-    resetPassword
+    resetPassword,
+        acceptPolicy
+
 };
