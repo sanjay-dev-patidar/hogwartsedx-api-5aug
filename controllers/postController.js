@@ -94,7 +94,7 @@ const getUserPosts = async (req, res) => {
 
 // Create a post
 const createPost = async (req, res) => {
-    const { title, category, content, titleImage, titleVideo, summary, subtitles } = req.body;
+    const { title, category, content, titleImage, titleVideo, superTitles,summary, subtitles } = req.body;
     
     try {
         const post = new Post({
@@ -104,6 +104,7 @@ const createPost = async (req, res) => {
             titleVideo,
             author: req.user.name,
             summary,
+            superTitles,
             subtitles,
             category
         });
