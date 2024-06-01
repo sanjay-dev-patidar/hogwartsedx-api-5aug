@@ -124,4 +124,7 @@
     router.get('/verify-token', authMiddleware, (req, res) => {
         res.json({ valid: true });
     });
+
+    router.post('/accept-policy', authMiddleware, authController.acceptPolicy);
+
     module.exports = router;    
