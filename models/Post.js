@@ -4,15 +4,50 @@ const slugify = require('slugify');
 const BulletPointSchema = new mongoose.Schema({
     text: String,
     image: String,
-    video: String, // Add video field to BulletPointSchema
-    codeSnippet: String // Add code snippet field to BulletPointSchema
+    video: String,
+    codeSnippet: String
 });
 
 const SubtitleSchema = new mongoose.Schema({
     title: String,
     bulletPoints: [BulletPointSchema],
     image: String,
-    video: String // Add video field to SubtitleSchema
+    video: String
+});
+
+const ComparisonItemSchema = new mongoose.Schema({
+    title: String,
+    bulletPoints: [String]
+});
+
+const ComparisonAttributeSchema = new mongoose.Schema({
+    attribute: String,
+    items: [ComparisonItemSchema]
+});
+
+const SuperTitleSchema = new mongoose.Schema({
+    superTitle: String,
+    attributes: [ComparisonAttributeSchema]
+});
+
+const SimilaritiesSchema = new mongoose.Schema({
+    commonFeatures: String,
+    explanation: String
+});
+
+const DifferencesSchema = new mongoose.Schema({
+    distinctFeatures: String,
+    explanation: String
+});
+
+const RatingSchema = new mongoose.Schema({
+    item1Rating: Number,
+    item2Rating: Number
+});
+
+const ConclusionSchema = new mongoose.Schema({
+    recommendation: String,
+    reasoning: String
 });
 
 const PostSchema = new mongoose.Schema({
@@ -34,6 +69,11 @@ const PostSchema = new mongoose.Schema({
     summary: {
         type: String
     },
+    superTitles: [SuperTitleSchema], 
+    similarities: SimilaritiesSchema,
+    differences: DifferencesSchema,
+    rating: RatingSchema,
+    conclusion: ConclusionSchema,
     category: {
         type: String,
         required: true
