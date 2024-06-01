@@ -91,7 +91,6 @@ const PostSchema = new mongoose.Schema({
         default: false
     }
 });
-
 PostSchema.pre('validate', function(next) {
     if (this.title) {
         this.slug = slugify(this.title, { lower: true, remove: /[*+~.()?,'"!:@]/g });
