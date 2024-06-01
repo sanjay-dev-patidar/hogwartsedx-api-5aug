@@ -33,7 +33,12 @@ const userSchema = new mongoose.Schema({
     completedPosts: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Post'
-    }]
+    }],
+      policyAccepted: { 
+        type: Boolean,
+        default: false
+    }
+
 
 });
 
