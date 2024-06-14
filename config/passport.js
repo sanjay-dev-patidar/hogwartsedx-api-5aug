@@ -9,7 +9,7 @@ const { sendWelcomeEmail } = require('./mailer');
 passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: "https://hogwarts-api-31may.onrender.com/api/auth/google/callback",
+    callbackURL: "https://hogwarts-api-14jun.onrender.com/api/auth/google/callback",
     passReqToCallback: true
   },
   async (req, token, tokenSecret, profile, done) => {
